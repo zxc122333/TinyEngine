@@ -29,3 +29,4 @@ export class Engine{
 export { Label } from "./label"
 export { Node } from "./node"
 export { Sprite } from "./sprite"
+export { Touch } from "./touch"
