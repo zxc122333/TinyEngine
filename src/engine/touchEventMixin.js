@@ -10,12 +10,16 @@ export class TouchEventMixin{
         if(!this.__mixinEvent__){
             this.mixin(EventMixin)
         }
-    }
-    listenTouch(engine,layerIndex){
-        if(!engine.touchManager){
-            throw new Error("use `TouchManager.addon(engine)` before listenTouch.")
-        }
-        engine.touchManager.addLayer(layerIndex,this)
+
+        this.touchLayer = 10
+
+        this.on("enter",()=>{
+            this.engine.touchManager.addLayer(layerIndex,this)
+        })
+
+        this.on("exit",()=>{
+            this.engine.touchManager.removeLayer(this)
+        })
     }
     onTouchBegin(touch){
         this.emit("touchBegin",touch)

@@ -4,12 +4,14 @@ import {ResourceLoader} from "./resource"
 export class Engine{
     constructor(){
         this.canvas = new Canvas()
+        this.canvas._active = true
         this.updateTimer = null
         this.loader = new ResourceLoader()
     }
     update(){
         this.updateTimer = requestAnimationFrame(this.update.bind(this))
-        this.canvas.update()
+        
+        this.canvas._callUpdate()
         this.canvas._renderCanvas()
     }
     start(){

@@ -7,6 +7,8 @@ export class Node{
         this.width = 0
         this.height = 0
 
+        this._active = false
+        this.engine = null
         if(this.__mixin__){
             for(var i =0;i<this.__mixin__.length;i++){
                 this.__mixin__[i].call(this)
@@ -18,16 +20,63 @@ export class Node{
         // console.log(child)
         this._children.push(child)
         child._parent = this
+        if(this._active){
+            child._callOnEnter()
+        }
+    }
+
+    removeChild(child){
+        var index = this._children.indexOf(child)
+        if(index==-1){
+            return
+        }
+        this._children.splice(index,1)
+        if(this._active){
+            child._callOnExit()
+        }
     }
 
     removeFromParent(){
         if(this._parent === null){
             return
         }
-        this._parent._children.splice(this._parent._children.indexOf(this),1)
+        this._parent.removeChild(this)
     }
 
-    update(){/*stub*/}
+    _callOnEnter(engine){
+        this._active = true
+        this.engine = engine
+        for(var i =0;i<this._children.length;i++){
+            this._children[i]._callOnEnter()
+        }
+        if(this.onEnter){
+            this.onEnter()
+        }
+        if(this.__mixinEvent__){
+            this.emit("enter")
+        }
+    }
+    _callOnExit(){
+        this._active = false
+        this.engine = null
+        if(this.onExit){
+            this.onExit()
+        }
+        if(this.__mixinEvent__){
+            this.emit("exit")
+        }
+        for(var i =0;i<this._children.length;i++){
+            this._children[i]._callOnExit()
+        }
+    }
+    _callUpdate(){
+        for(var i =0;i<this._children.length;i++){
+            this._children[i]._callUpdate()
+        }
+        if(this.update){
+            this.update()
+        }
+    }
 
     _render(ctx){
         ctx.save()
