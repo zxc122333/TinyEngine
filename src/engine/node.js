@@ -34,4 +34,9 @@ export class Node{
         ctx.restore()
     }
     render(ctx){/*stub*/}
+
+    mixin(plugin){
+        this.__proto__ = {...this.__proto__, ...plugin.prototype}
+        plugin.call(this)
+    }
 }

@@ -24,6 +24,23 @@ export class Engine{
         cancelAnimationFrame(this.updateTimer)
         this.updateTimer = null
     }
+
+    mixin(targetClass,mixin){
+        if(typeof(targetClass)!="function"){
+            throw Error("mixin target must be class")
+        }
+        if(typeof(mixin)!="function"){
+            throw Error("mixin must be class")
+        }
+
+        if(!targetClass.__mixin__){
+            targetClass.__mixin__ = [mixin]
+        }else{
+            targetClass.__mixin__.push(mixin)
+        }
+
+        targetClass.prototype = {...targetClass.prototype,...mixin.prototype}
+    }
 }
 
 export { Label } from "./label"
