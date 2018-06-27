@@ -1,5 +1,4 @@
 export class Node{
-    
     constructor(){
         this._children = []
         this._parent = null
@@ -7,6 +6,12 @@ export class Node{
         this.y = 0
         this.width = 0
         this.height = 0
+
+        if(this.__mixin__){
+            for(var i =0;i<this.__mixin__.length;i++){
+                this.__mixin__[i].call(this)
+            }
+        }
     }
 
     addChild(child){
