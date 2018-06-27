@@ -15,4 +15,7 @@ export class Canvas extends Node{
         }
         this.ctx.restore()
     }
+    localToGlobal(x,y){
+        return {x,y}
+    }
 }

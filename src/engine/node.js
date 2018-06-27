@@ -39,4 +39,13 @@ export class Node{
         this.__proto__ = {...this.__proto__, ...plugin.prototype}
         plugin.call(this)
     }
+
+    localToGlobal(x,y){
+        if(this._parent == null)return {x:0,y:0}
+        return this._parent.localToGlobal(this.x + x,this.y + y)
+    }
+
+    isInside(x,y){
+        return x< this.width && y< this.height
+    }
 }
