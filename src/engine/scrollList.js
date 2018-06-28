@@ -1,5 +1,5 @@
 import {Node} from "./node"
-export class ScrollView extends Node{
+export class ScrollList extends Node{
     constructor(){
         super()
         this.scrollY = 0

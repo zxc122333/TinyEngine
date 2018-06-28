@@ -6,7 +6,7 @@ import {
     TouchManager,
     EventMixin,
     TouchEventMixin,
-    ScrollView
+    ScrollList
 } from "./engine"
 
 var engine = new Engine()
@@ -25,15 +25,17 @@ sprite.y = 200
 sprite.wait(engine.loader.loadImgAsync("images/enemy.png"),true)
 engine.canvas.addChild(sprite)
 
-
-console.log(    Label,
+//touch all modules for build size
+console.log(    
+    Label,
     Node,
     Sprite,
     Touch,
     TouchManager,
     EventMixin,
     TouchEventMixin,
-    ScrollView)
+    ScrollList
+)
 
 setInterval(function(){
     label.text = label.text == "Hello World!" ? "" :"Hello World!"
