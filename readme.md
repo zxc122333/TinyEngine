@@ -14,8 +14,9 @@
     - [x] Sprite ✂️
         - [ ] 支持九宫
     - [x] ScrollView ✂️ (暂时只支持垂直滚动)
-- [ ] 基于yaml的UI描述文件 ✂️
 - [ ] 简单动画（平移、缩放、旋转，缓动）✂️
+- [ ] 基于yaml的UI描述文件 ✂️
+- [ ] 供Egret使用的一些工具函数
 
 ## Quick Start
 1. 安装Nodejs

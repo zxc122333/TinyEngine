@@ -1,4 +1,13 @@
-import {Engine,Label,Sprite} from "./engine"
+import {
+    Label,
+    Node,
+    Sprite,
+    Touch,
+    TouchManager,
+    EventMixin,
+    TouchEventMixin,
+    ScrollView
+} from "./engine"
 
 var engine = new Engine()
 
@@ -15,6 +24,16 @@ sprite.x = 200
 sprite.y = 200
 sprite.wait(engine.loader.loadImgAsync("images/enemy.png"),true)
 engine.canvas.addChild(sprite)
+
+
+console.log(    Label,
+    Node,
+    Sprite,
+    Touch,
+    TouchManager,
+    EventMixin,
+    TouchEventMixin,
+    ScrollView)
 
 setInterval(function(){
     label.text = label.text == "Hello World!" ? "" :"Hello World!"
