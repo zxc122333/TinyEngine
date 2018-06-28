@@ -1,8 +1,8 @@
 import {Node} from "./node"
 export class ScrollList extends Node{
-    constructor(){
-        super()
-        this.scrollY = 0
+    constructor(init){
+        super(init)
+        this.scrollY = this.scrollY || 0
     }
 
     addChild(child){

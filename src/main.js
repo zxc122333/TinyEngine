@@ -6,24 +6,19 @@ import {
     TouchManager,
     EventMixin,
     TouchEventMixin,
-    ScrollList
+    ScrollList,
+    Engine,
 } from "./engine"
+import { RankLayer } from "./rank/rankLayer";
 
 var engine = new Engine()
 
 engine.start()
 
-var label = new Label()
-label.text = "Hello World!"
-label.x = 50
-label.y = 50
-engine.canvas.addChild(label)
-
-var sprite = new Sprite()
-sprite.x = 200
-sprite.y = 200
-sprite.wait(engine.loader.loadImgAsync("images/enemy.png"),true)
-engine.canvas.addChild(sprite)
+var rankLayer = new RankLayer()
+rankLayer.width = this.canvas.width
+rankLayer.height = this.canvas.height
+engine.canvas.addChild(rankLayer)
 
 //touch all modules for build size
 console.log(    

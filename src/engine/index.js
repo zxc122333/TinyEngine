@@ -1,12 +1,10 @@
 import { Canvas } from "./canvas";
-import {ResourceLoader} from "./resource"
 
 export class Engine{
     constructor(){
         this.canvas = new Canvas()
         this.canvas._active = true
         this.updateTimer = null
-        this.loader = new ResourceLoader()
     }
     update(){
         this.updateTimer = requestAnimationFrame(this.update.bind(this))
@@ -42,6 +40,9 @@ export class Engine{
         }
 
         targetClass.prototype = {...targetClass.prototype,...mixin.prototype}
+        targetClass.prototype = {__proto__:targetClass.prototype}
+        Object.assign(targetClass.prototype,plugin.prototype)
+        
     }
 }
 
@@ -52,3 +53,4 @@ export { Touch,TouchManager } from "./touch"
 export { EventMixin } from "./eventMixin"
 export { TouchEventMixin } from "./touchEventMixin"
 export { ScrollList }from "./scrollList"
+export {ResourceLoader} from "./resource"

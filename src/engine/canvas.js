@@ -1,7 +1,7 @@
 import {Node} from "./node"
 export class Canvas extends Node{
-    constructor(){
-        super()
+    constructor(init){
+        super(init)
         this._wxCanvas = wx.getSharedCanvas()
         this.ctx=this._wxCanvas.getContext('2d')
     }

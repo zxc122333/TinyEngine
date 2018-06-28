@@ -1,5 +1,7 @@
 export class Node{
-    constructor(){
+    constructor(init){
+        this._init = init
+
         this._children = []
         this._parent = null
         this.x = 0
@@ -7,21 +9,48 @@ export class Node{
         this.width = 0
         this.height = 0
 
-        this._active = false
+        this._active = true
         this.engine = null
         if(this.__mixin__){
             for(var i =0;i<this.__mixin__.length;i++){
-                this.__mixin__[i].call(this)
+                this.__mixin__[i].call(this,init)
+            }
+        }
+        if(init){
+            for(var key of init){
+                if(key[0] == "$"){
+                    continue
+                }
+                this[key] = init[key]
             }
         }
     }
-
+    get active(){
+        return this._active
+    }
+    set active(value){
+        if(this._active == value){
+            return
+        }
+        this._active = value
+        if(!this.engine){
+            return
+        }
+        if(value){
+            this._callOnEnter(this.engine)
+        }else if(!value){
+            this._callOnExit(this.engine)
+        }
+    }
     addChild(child){
         // console.log(child)
         this._children.push(child)
         child._parent = this
-        if(this._active){
-            child._callOnEnter()
+        if(this._attached){
+            child._call
+        }
+        if(this._active && this.engine){
+            child._callOnEnter(this.engine)
         }
     }
 
@@ -31,8 +60,8 @@ export class Node{
             return
         }
         this._children.splice(index,1)
-        if(this._active){
-            child._callOnExit()
+        if(this._active && this.engine){
+            child._callOnExit(null)
         }
     }
 
@@ -44,10 +73,12 @@ export class Node{
     }
 
     _callOnEnter(engine){
-        this._active = true
         this.engine = engine
+        if(!this._active){
+            return
+        }
         for(var i =0;i<this._children.length;i++){
-            this._children[i]._callOnEnter()
+            this._children[i]._callOnEnter(engine)
         }
         if(this.onEnter){
             this.onEnter()
@@ -56,9 +87,11 @@ export class Node{
             this.emit("enter")
         }
     }
-    _callOnExit(){
-        this._active = false
-        this.engine = null
+    _callOnExit(engine){
+        this.engine = engine
+        if(!this._active){
+            return
+        }
         if(this.onExit){
             this.onExit()
         }
@@ -66,7 +99,7 @@ export class Node{
             this.emit("exit")
         }
         for(var i =0;i<this._children.length;i++){
-            this._children[i]._callOnExit()
+            this._children[i]._callOnExit(engine)
         }
     }
     _callUpdate(){
@@ -90,8 +123,10 @@ export class Node{
     render(ctx){/*stub*/}
 
     mixin(plugin){
-        this.__proto__ = {...this.__proto__, ...plugin.prototype}
-        plugin.call(this)
+        this.__proto__ = {__proto__:this.__proto__}
+        Object.assign(this.__proto__,plugin.prototype)
+        
+        plugin.call(this,this._init)
     }
 
     localToGlobal(x,y){

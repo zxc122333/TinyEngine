@@ -1,4 +1,13 @@
+var instance = null
+
 export class ResourceLoader{
+    static get instance(){
+        if(!instance){
+            instance = new ResourceLoader()
+        }
+        return instance
+    }
+
     constructor(){
         this._cache = {}
         this._loading = {}

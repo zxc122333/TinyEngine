@@ -1,10 +1,10 @@
 import {Node} from "./node"
 export class Label extends Node{
-    constructor(){
-        super()
-        this.text = "Label"
-        this.font = "30px"
-        this.fillStyle = "#FFFFFF"
+    constructor(init){
+        super(init)
+        this.text = this.text || "Label"
+        this.font = this.font || "30px"
+        this.fillStyle = this.fillStyle || "#FFFFFF"
     }
     render(ctx){
         ctx.font = this.font;
