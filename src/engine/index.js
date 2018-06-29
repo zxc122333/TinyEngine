@@ -1,9 +1,11 @@
 import { Canvas } from "./canvas";
-
-export class Engine{
+import {EventMixin} from "./eventMixin"
+export class Engine extends EventMixin{
     constructor(){
+        super()
         this.canvas = new Canvas()
         this.canvas._active = true
+        this.canvas.engine = this
         this.updateTimer = null
     }
     update(){
@@ -15,6 +17,8 @@ export class Engine{
     start(){
         if(this.updateTimer !== null)
             return
+
+        this.emit("start")
         this.updateTimer = requestAnimationFrame(this.update.bind(this))
     }
     stop(){
@@ -23,9 +27,10 @@ export class Engine{
         
         cancelAnimationFrame(this.updateTimer)
         this.updateTimer = null
+        this.emit("stop")
     }
 
-    mixin(targetClass,mixin){
+    static mixin(targetClass,mixin){
         if(typeof(targetClass)!="function"){
             throw Error("mixin target must be class")
         }
@@ -41,8 +46,7 @@ export class Engine{
 
         targetClass.prototype = {...targetClass.prototype,...mixin.prototype}
         targetClass.prototype = {__proto__:targetClass.prototype}
-        Object.assign(targetClass.prototype,plugin.prototype)
-        
+        Object.assign(targetClass.prototype,mixin.prototype)
     }
 }
 

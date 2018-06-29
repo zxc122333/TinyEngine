@@ -49,6 +49,8 @@ export class TouchManager{
         this.layers = []
         this.layerNodes = {}
         this.layerNodeMap = new Map()
+        engine.on("start",this._addListener.bind(this))
+        engine.on("stop",this._removeListener.bind(this))
     }
 
     addLayer(layerIndex,node){
@@ -91,7 +93,7 @@ export class TouchManager{
         wx.offTouchCancel(this.handlers.cancel)
     }
 
-    _onTouchBegin(arg){
+    _onTouchBegin(args){
         if(this.touch != null){
             return
         }
@@ -101,15 +103,15 @@ export class TouchManager{
 
         var raw = args.changedTouches[0]
 
-        this.touch = new Touch(raw.identifier,raw.screenX,raw.screenY)
+        this.touch = new Touch(raw.identifier,raw.pageX,raw.pageY)
 
         for(var i = 0;i<this.layers.length;i++){
-            var layer = this.layerNodes[layer]
-            for(var j =0;j<layer.length;i++){
-                touch.handle = false
-                touch.swallow = false
-                var result = layer[j].onTouchBegin(touch)
-                if(result === true || touch.handle){
+            var layer = this.layerNodes[this.layers[i]]
+            for(var j =0;j<layer.length;j++){
+                this.touch.handle = false
+                this.touch.swallow = false
+                var result = layer[j].onTouchBegin(this.touch)
+                if(result === true || this.touch.handle){
                     if(this.touch.swallow){
                         for(var k = 0;k< this.touch.inviter.length;k++){
                             if(this.touch.inviter[k].onTouchCancel){
@@ -125,7 +127,7 @@ export class TouchManager{
             }
         }
     }
-    _onTouchMove(arg){
+    _onTouchMove(args){
         if(this.touch == null){
             return
         }
@@ -142,7 +144,7 @@ export class TouchManager{
             return
         }
         this.touch.swallow = false
-        this.touch._moveTo(raw.screenX,raw.screenY)
+        this.touch._moveTo(raw.pageX,raw.pageY)
         for(var k = 0;k< this.touch.inviter.length;k++){
             if(this.touch.inviter[k].onTouchMove){
                 this.touch.inviter[k].onTouchMove(this.touch)
@@ -161,7 +163,7 @@ export class TouchManager{
             }
         }
     }
-    _onTouchEnd(arg){
+    _onTouchEnd(args){
         if(this.touch == null){
             return
         }
@@ -177,7 +179,7 @@ export class TouchManager{
         if(raw == null){
             return
         }
-        this.touch._moveTo(raw.screenX,raw.screenY)
+        this.touch._moveTo(raw.pageX,raw.pageY)
         for(var k = 0;k< this.touch.inviter.length;k++){
             if(this.touch.inviter[k].onTouchEnd){
                 this.touch.inviter[k].onTouchEnd(this.touch)
@@ -194,7 +196,7 @@ export class TouchManager{
 
         this.touch = null
     }
-    _onTouchCancel(arg){
+    _onTouchCancel(args){
         if(this.touch == null){
             return
         }

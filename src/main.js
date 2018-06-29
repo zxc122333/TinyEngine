@@ -12,26 +12,33 @@ import {
 import { RankLayer } from "./rank/rankLayer";
 
 var engine = new Engine()
+TouchManager.addon(engine)
 
 engine.start()
 
-var rankLayer = new RankLayer()
-rankLayer.width = this.canvas.width
-rankLayer.height = this.canvas.height
+var rankLayer = new RankLayer({
+    width:engine.canvas.width,
+    height:engine.canvas.height,
+})
 engine.canvas.addChild(rankLayer)
 
-//touch all modules for build size
-console.log(    
-    Label,
-    Node,
-    Sprite,
-    Touch,
-    TouchManager,
-    EventMixin,
-    TouchEventMixin,
-    ScrollList
-)
+var label = new Label({text:"hello world!"})
+label.x = 100
+label.y = 100
+engine.canvas.addChild(label)
 
-setInterval(function(){
-    label.text = label.text == "Hello World!" ? "" :"Hello World!"
-},500)
+//touch all modules for build size
+// console.log(    
+//     Label,
+//     Node,
+//     Sprite,
+//     Touch,
+//     TouchManager,
+//     EventMixin,
+//     TouchEventMixin,
+//     ScrollList
+// )
+
+// setInterval(function(){
+//     label.text = label.text == "Hello World!" ? "" :"Hello World!"
+// },500)

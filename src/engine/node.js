@@ -17,7 +17,7 @@ export class Node{
             }
         }
         if(init){
-            for(var key of init){
+            for(var key in init){
                 if(key[0] == "$"){
                     continue
                 }
@@ -111,16 +111,12 @@ export class Node{
         }
     }
 
-    _render(ctx){
-        ctx.save()
-        ctx.translate(this.x,this.y)
-        this.render(ctx)
+    _render(ctx,a,b,c,d,e,f){
+        this.render && this.render(ctx,a,b,c,d,this.x + e,this.y + f)
         for(var i=0;i<this._children.length;i++){
-            this._children[i]._render(ctx)
+            this._children[i]._render(ctx,a,b,c,d,this.x + e,this.y + f)
         }
-        ctx.restore()
     }
-    render(ctx){/*stub*/}
 
     mixin(plugin){
         this.__proto__ = {__proto__:this.__proto__}
@@ -134,7 +130,13 @@ export class Node{
         return this._parent.localToGlobal(this.x + x,this.y + y)
     }
 
+    globalToLocal(x,y){
+        if(this._parent == null)return {x:0,y:0}
+        var parent = this._parent.globalToLocal(x,y)
+        return {x:parent.x - this.x,y:parent.y - this.y}
+    }
+
     isInside(x,y){
-        return x< this.width && y< this.height
+        return x > 0 && x< this.width && y > 0 && y< this.height
     }
 }

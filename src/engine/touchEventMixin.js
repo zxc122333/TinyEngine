@@ -15,7 +15,7 @@ export function TouchEventMixin(init){
         this.touchLayer = init.$touchEventMixin.layer
     }
     this.on("enter",()=>{
-        this.engine.touchManager.addLayer(layerIndex,this)
+        this.engine.touchManager.addLayer(this.touchLayer,this)
     })
 
     this.on("exit",()=>{
@@ -24,8 +24,10 @@ export function TouchEventMixin(init){
 }
 
 TouchEventMixin.prototype.onTouchBegin = function(touch){
-    if(this.isInside(touch.current.x,touch.current.y)){
-        this.emit("touchBegin",touch)
+    var local = this.globalToLocal(touch.current.x,touch.current.y)
+    if(this.isInside(local.x,local.y)){
+        this.emit("touchBegin",touch,local)
+        return true
     }
 }
 TouchEventMixin.prototype.onTouchMove = function(touch){

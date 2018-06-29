@@ -4,18 +4,22 @@ export class Canvas extends Node{
         super(init)
         this._wxCanvas = wx.getSharedCanvas()
         this.ctx=this._wxCanvas.getContext('2d')
+        this.width = this._wxCanvas.width
+        this.height = this._wxCanvas.height
     }
 
     _renderCanvas(){
-        this.ctx.save()
+        this.ctx.setTransform(1,0,0,1,0,0)
         this.ctx.fillStyle="#FFFFFF";
-        this.ctx.fillRect(0,0,this._wxCanvas.width,this._wxCanvas.height);
+        this.ctx.fillRect(0,0,this.width,this.height);
         for(var i=0;i<this._children.length;i++){
-            this._children[i]._render(this.ctx)
+            this._children[i]._render(this.ctx,1,0,0,1,0,0)
         }
-        this.ctx.restore()
     }
     localToGlobal(x,y){
+        return {x,y}
+    }
+    globalToLocal(x,y){
         return {x,y}
     }
 }

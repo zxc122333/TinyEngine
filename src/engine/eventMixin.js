@@ -3,14 +3,14 @@ export function EventMixin(init){
     this.__mixinEvent__ = true
 }
 EventMixin.prototype.on = function(event,func){
-    var listeners = app._events[event] || (app._events[event] = [])
+    var listeners = this._events[event] || (this._events[event] = [])
     listeners.push({
         func: func,
         once: false,
     })
 }
 EventMixin.prototype.once = function(event,func){
-    var listeners = app._events[event] || (app._events[event] = [])
+    var listeners = this._events[event] || (this._events[event] = [])
     listeners.push({
         func: func,
         once: true,
