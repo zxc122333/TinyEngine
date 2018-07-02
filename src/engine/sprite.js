@@ -8,7 +8,7 @@ export class Sprite extends Node{
 
     render(ctx,a,b,c,d,e,f){
         if(!this.image)return
-        ctx.setTransform(a, b,c,d,this.x + e,this.y + f)
+        ctx.setTransform(a, b,c,d,e,f)
         ctx.fillStyle = "#ff0000"
         ctx.fillRect(0,0,this.width,this.height)
         if(!this.patch9){
