@@ -60,7 +60,7 @@ export class RankLayer extends Node{
                 tab3Button.patch9 = {x:25,y:16,w:10,h:5}
                 tab3Button.width = this.width / 3
                 tab3Button.height = 50
-                tab3Button.x = 2* this.width / 3
+                tab3Button.x = 2 * this.width / 3
                 tab3Button.y = 50
                 tab3Button.mixin(TouchEventMixin)
                 tab3Button.on("touchTap",this.switchTabScoreRank.bind(this))
