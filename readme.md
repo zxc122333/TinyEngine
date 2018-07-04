@@ -28,3 +28,12 @@
 5. src/main.js 为子域工程入口文件,根据需要进行修改
 6. npm run build
 7. 将dist/index.js拷贝到项目目录
+
+## ChangeLog
+- v0.2.0 2018.07.04
+    - 拆分ScrollList和ScrollView
+    - ScrollView增加惯性支持
+    - 暂时移除clip（微信bug）
+    - 修复label初始化bug
+    - 增加label baseline设置支持
+    - 新控件：ScrollList 节点循环利用的滚动列表
