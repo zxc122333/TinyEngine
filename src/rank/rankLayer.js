@@ -78,6 +78,11 @@ export class RankLayer extends Node{
         list.width = this.width
         list.height = this.height - 100
         list.y = 100
+        list.createNode = ()=>{
+            return new RankNode({type:"gold"})
+        }
+        list.nodeHeight = 150
+        list.data = this.data
         this.addChild(list)
         this.list = list
     }
@@ -94,36 +99,14 @@ export class RankLayer extends Node{
     }
     switchTabGoldRank(){
         console.log("switchTabGoldRank")
-        this.clear()
-        if(!this.data)return
-        for(var i=0;i<this.data.length;i++){
-            var node = new RankNode({data:this.data[i],type:"gold"})
-            this.list.addChild(node)
-        }
-        this.list.relocation()
+        this.list.setData(this.data)
     }
     switchTabLevelRank(){
         console.log("switchTabLevelRank")
-        this.clear()
-        for(var i=0;i<this.data.length;i++){
-            var node = new RankNode({data:this.data[i],type:"rank"})
-            this.list.addChild(node)
-        }
-        if(!this.data)return
+        this.list.setData(this.data)
     }
     switchTabScoreRank(){
         console.log("switchTabScoreRank")
-        this.clear()
-        for(var i=0;i<this.data.length;i++){
-            var node = new RankNode({data:this.data[i],type:"score"})
-            this.list.addChild(node)
-        }
-        if(!this.data)return
-    }
-    clear(){
-        for(var i = this.list._children.length-1;i>=0;i--){
-            var child = this.list._children[i]
-            child.removeFromParent()
-        }
+        this.list.setData(this.data)
     }
 }

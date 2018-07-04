@@ -1,72 +1,74 @@
-import {Node} from "./node"
-export class ScrollList extends Node{
+import { ScrollView } from "./scrollView";
+export class ScrollList extends ScrollView{
     constructor(init){
         super(init)
-        this.scrollY = this.scrollY || 0
-        this.minY = 0
-        this._canvas = wx.createCanvas()
-        this._ctx = this._canvas.getContext("2d")
+
+        this.createNode = null
+        this.nodeHeight = 0
+        this.data = []
     }
     onEnter(){
-        this.engine.touchManager.addLayer(10,this)
-        this._canvas.width = this.width
-        this._canvas.height = this.height
-    }
-    onExit(){
-        this.engine.touchManager.removeLayer(this)
-    }
-
-    relocation(){
-        var curY = this.scrollY
-        for(var i = 0;i<this._children.length;i++){
-            this._children[i].y = curY
-            curY += this._children[i].height
+        ScrollView.prototype.onEnter.call(this)
+        if(this.createNode == null){
+            throw Error("ScrollList.createNode is null")
         }
-        this.minY = curY - this.height
+        if(this.nodeHeight == 0){
+            throw Error("ScrollList.nodeHeight is 0")
+        }
     }
-
-    _render(ctx,a,b,c,d,e,f){
-        this._ctx.setTransform(1,0,0,1,0,0)
-        this._ctx.clearRect(0,0,this.width,this.height)
-        for(var i=0;i<this._children.length;i++){
-            if(this._children[i].y > this.height || this._children[i].y + this._children[i].height < 0){
-                continue
+    onScroll(dt){
+        var minY = this.height
+        var minNode = 0
+        var maxY = 0
+        var maxNode = 0
+        for(var i =0;i<this._children.length;i++){
+            if(minY > this._children[i].y){
+                minY = this._children[i].y
+                minNode = this._children[i]
             }
-            this._children[i]._render(this._ctx,a,b,c,d,0,0)
+            if(maxY < this._children[i].y + this.nodeHeight){
+                maxY = this._children[i].y + this.nodeHeight
+                maxNode = this._children[i]
+            }
         }
-        ctx.setTransform(a,b,c,d,this.x + e,this.y + f)
-        ctx.drawImage(this._canvas,0,0,this.width,this.height)
-    }
-
-    onTouchBegin(touch){
-        if(!this.isInside(touch.current.x,touch.current.y)){
-            return
+        if(minY>0&&minNode._scrollListIndex>0){
+            maxNode._scrollListIndex = minNode._scrollListIndex-1
+            maxNode.setData(this.data[minNode._scrollListIndex-1])
+            maxNode.y = minY - this.nodeHeight
         }
-        return true
-    }
-    onTouchMove(touch){
-        var dy = touch.delta.y
-        this.scrollY += touch.delta.y
-
-        if(this.scrollY > 0){
-            dy = dy - this.scrollY
-            this.scrollY = 0
-        }else if(this.scrollY < -this.minY){
-            dy = dy - (this.scrollY + this.minY)
-            this.scrollY = -this.minY
-        }
-
-        for(var i = 0;i<this._children.length;i++){
-            this._children[i].y += dy
-        }
-        if(touch.distance>20){
-            touch.swallow = true
+        if(maxY < this.height && this.data.length > maxNode._scrollListIndex+1 ){
+            minNode._scrollListIndex = maxNode._scrollListIndex+1
+            minNode.setData(this.data[maxNode._scrollListIndex+1])
+            minNode.y = maxY
         }
     }
-    onTouchEnd(touch){
-
+    setData(data){
+        this.data = data
+        this.rebuild()
     }
-    onTouchCancel(touch){
 
+    rebuild(){
+        this.removeAllChildren()
+        var height = 0
+        var index = 0
+        var maxNode = Math.ceil(this.height / this.nodeHeight)+1
+        var nodeCount = 0
+        while(true){
+            if(nodeCount >= maxNode){
+                break
+            }
+            if(index >= this.data.length){
+                break
+            }
+            var node = this.createNode()
+            node.y = height
+            height += this.nodeHeight
+            node.setData && node.setData(this.data[nodeCount])
+            node._scrollListIndex = nodeCount
+            this.addChild(node)
+            nodeCount++
+        }
+        this.scrollY = 0
+        this.maxY = this.nodeHeight * this.data.length
     }
 }

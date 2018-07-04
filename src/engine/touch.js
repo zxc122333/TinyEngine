@@ -14,6 +14,7 @@ export class Touch{
     }
 
     _moveTo(x,y){
+        if(x == this.current.x && y == this.current.y)return
         var last = this.current
         var lastAt = this.currentAt
         this.current = {x,y}
@@ -115,7 +116,12 @@ export class TouchManager{
                     if(this.touch.swallow){
                         for(var k = 0;k< this.touch.inviter.length;k++){
                             if(this.touch.inviter[k].onTouchCancel){
-                                this.touch.inviter[k].onTouchCancel(this.touch)
+                                try{
+                                    this.touch.inviter[k].onTouchCancel(this.touch)
+                                }
+                                catch(e){
+                                    console.error(e)
+                                }  
                             }
                         }
                         this.touch.inviter = [layer[j]]
@@ -144,17 +150,31 @@ export class TouchManager{
             return
         }
         this.touch.swallow = false
+        // var now = Date.now()
         this.touch._moveTo(raw.pageX,raw.pageY)
+        // }
+        
         for(var k = 0;k< this.touch.inviter.length;k++){
             if(this.touch.inviter[k].onTouchMove){
-                this.touch.inviter[k].onTouchMove(this.touch)
+                try{
+                    this.touch.inviter[k].onTouchMove(this.touch)
+                }
+                catch(e){
+                    console.error(e)
+                } 
+                
                 if(this.touch.swallow){
                     for(var i = 0;i< this.touch.inviter.length;i++){
                         if(i == k){
                             continue
                         }
                         if(this.touch.inviter[i].onTouchCancel){
-                            this.touch.inviter[i].onTouchCancel(this.touch)
+                            try{
+                                this.touch.inviter[k].onTouchCancel(this.touch)
+                            }
+                            catch(e){
+                                console.error(e)
+                            } 
                         }
                     }
                     this.touch.inviter = [this.touch.inviter[k]]
@@ -182,14 +202,24 @@ export class TouchManager{
         this.touch._moveTo(raw.pageX,raw.pageY)
         for(var k = 0;k< this.touch.inviter.length;k++){
             if(this.touch.inviter[k].onTouchEnd){
-                this.touch.inviter[k].onTouchEnd(this.touch)
+                try{
+                    this.touch.inviter[k].onTouchEnd(this.touch)
+                }
+                catch(e){
+                    console.error(e)
+                } 
             }
         }
 
         if(this.touch.distance < 20 && this.touch.currentAt - this.touch.beginAt < 350){
             for(var k = 0;k< this.touch.inviter.length;k++){
                 if(this.touch.inviter[k].onTouchTap){
-                    this.touch.inviter[k].onTouchTap(this.touch)
+                    try{
+                        this.touch.inviter[k].onTouchTap(this.touch)
+                    }
+                    catch(e){
+                        console.error(e)
+                    } 
                 }
             }
         }

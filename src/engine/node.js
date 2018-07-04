@@ -52,6 +52,9 @@ export class Node{
         if(this._active && this.engine){
             child._callOnEnter(this.engine)
         }
+        if(this.onAddChild){
+            this.onAddChild(child)
+        }
     }
 
     removeChild(child){
@@ -62,6 +65,21 @@ export class Node{
         this._children.splice(index,1)
         if(this._active && this.engine){
             child._callOnExit(null)
+        }
+        if(this.onRemoveChild){
+            this.onRemoveChild(child)
+        }
+    }
+
+    removeAllChildren(){
+        while(this._children.length){
+            var child = this._children.shift()
+            if(this._active && this.engine){
+                child._callOnExit(null)
+            }
+            if(this.onRemoveChild){
+                this.onRemoveChild(child)
+            }
         }
     }
 
@@ -102,12 +120,12 @@ export class Node{
             this._children[i]._callOnExit(engine)
         }
     }
-    _callUpdate(){
+    _callUpdate(dt){
         for(var i =0;i<this._children.length;i++){
-            this._children[i]._callUpdate()
+            this._children[i]._callUpdate(dt)
         }
         if(this.update){
-            this.update()
+            this.update(dt)
         }
     }
 

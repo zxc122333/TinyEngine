@@ -1,5 +1,6 @@
 import { Canvas } from "./canvas";
 import {EventMixin} from "./eventMixin"
+import { S_IRWXG } from "constants";
 export class Engine extends EventMixin{
     constructor(){
         super()
@@ -7,11 +8,16 @@ export class Engine extends EventMixin{
         this.canvas._active = true
         this.canvas.engine = this
         this.updateTimer = null
+        this._lastUpdate = 0
+
+        this._tempCanvas = {}
     }
     update(){
         this.updateTimer = requestAnimationFrame(this.update.bind(this))
-        
-        this.canvas._callUpdate()
+        var last =  this._lastUpdate
+        this._lastUpdate = Date.now()
+        this.canvas._callUpdate(this._lastUpdate - last)
+       
         this.canvas._renderCanvas()
     }
     start(){
@@ -19,6 +25,7 @@ export class Engine extends EventMixin{
             return
 
         this.emit("start")
+        this._lastUpdate = Date.now()
         this.updateTimer = requestAnimationFrame(this.update.bind(this))
     }
     stop(){
@@ -47,6 +54,27 @@ export class Engine extends EventMixin{
         targetClass.prototype = {...targetClass.prototype,...mixin.prototype}
         targetClass.prototype = {__proto__:targetClass.prototype}
         Object.assign(targetClass.prototype,mixin.prototype)
+    }
+    
+    _getTempCanvas(width,height){
+        var id = width + "x" + height
+        var canvases = this._tempCanvas[id] || (this._tempCanvas[id] = [])
+        if(canvases.length ==0){
+            var canvas = wx.createCanvas()
+            console.log("create temp canvas:"+id)
+            canvas.width = width
+            canvas.height = height
+            return {
+                id:id,
+                canvas: canvas,
+                context: canvas.getContext("2d"),
+            }
+        }
+        return canvases.pop()
+    }
+    _backTempCanvas(obj){
+        var canvases = this._tempCanvas[obj.id] || (this._tempCanvas[id] = [])
+        canvases.push(obj)
     }
 }
 
