@@ -17,7 +17,7 @@
     - [x] ScrollList ✂️ (暂时只支持垂直滚动)
     - [x] ScrollView
     - [ ] ~~clip~~ （暂时移除，严重性能问题，等待微信修复）
-- [ ] 简单动画（平移、缩放、旋转，缓动）✂️
+- [x] 强大的动画系统(移植https://github.com/tweenjs/tween.js)✂️
 - [ ] 基于yaml的UI描述文件 ✂️
 - [ ] 供Egret使用的一些工具函数
 
@@ -38,3 +38,5 @@
     - 修复label初始化bug
     - 增加label baseline设置支持
     - 新控件：ScrollList 节点循环利用的滚动列表
+- v0.3.0 2018.07.04
+    - 动画支持！
