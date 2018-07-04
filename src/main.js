@@ -1,18 +1,14 @@
 import {
     Label,
-    Node,
-    Sprite,
-    Touch,
     TouchManager,
-    EventMixin,
-    TouchEventMixin,
-    ScrollList,
+    Tween,
     Engine,
 } from "./engine"
 import { RankLayer } from "./rank/rankLayer";
 
 var engine = new Engine()
 TouchManager.addon(engine)
+Tween.addon(engine)
 
 engine.start()
 

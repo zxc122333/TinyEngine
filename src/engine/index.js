@@ -1,6 +1,5 @@
 import { Canvas } from "./canvas";
 import {EventMixin} from "./eventMixin"
-import { S_IRWXG } from "constants";
 export class Engine extends EventMixin{
     constructor(){
         super()
@@ -17,7 +16,7 @@ export class Engine extends EventMixin{
         var last =  this._lastUpdate
         this._lastUpdate = Date.now()
         this.canvas._callUpdate(this._lastUpdate - last)
-       
+        this.emit("update",dt)
         this.canvas._renderCanvas()
     }
     start(){
@@ -86,3 +85,4 @@ export { EventMixin } from "./eventMixin"
 export { TouchEventMixin } from "./touchEventMixin"
 export { ScrollList }from "./scrollList"
 export {ResourceLoader} from "./resource"
+export {Tween,TweenGroup,TweenEasing,TweenInterpolation} from "./tween"
