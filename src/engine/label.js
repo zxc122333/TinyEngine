@@ -6,11 +6,13 @@ export class Label extends Node{
         this.font = this.font || "30px"
         this.textBaseline = this.textBaseline || "top"
         this.fillStyle = this.fillStyle || "#000000"
+        this.textAlign = this.textAlign || "start"
     }
     render(ctx,a,b,c,d,e,f){
         ctx.setTransform(a, b,c,d,e,f)
         ctx.font = this.font;
         ctx.fillStyle = this.fillStyle;
+        ctx.textAlign = this.textAlign
         ctx.textBaseline = this.textBaseline
         ctx.fillText(this.text,0,0);
     }
