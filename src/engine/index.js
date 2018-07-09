@@ -16,7 +16,7 @@ export class Engine extends EventMixin{
         var last =  this._lastUpdate
         this._lastUpdate = Date.now()
         this.canvas._callUpdate(this._lastUpdate - last)
-        this.emit("update",dt)
+        this.emit("update",this._lastUpdate - last)
         this.canvas._renderCanvas()
     }
     start(){

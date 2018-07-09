@@ -20,6 +20,7 @@
 - [x] 强大的动画系统(移植https://github.com/tweenjs/tween.js)✂️
 - [ ] 基于yaml的UI描述文件 ✂️
 - [ ] 供Egret使用的一些工具函数
+- [ ] .d.ts 描述文件
 
 ## Quick Start
 1. 安装Nodejs
