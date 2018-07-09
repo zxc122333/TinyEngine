@@ -50,14 +50,13 @@ export class ScrollList extends ScrollView{
     rebuild(){
         this.removeAllChildren()
         var height = 0
-        var index = 0
         var maxNode = Math.ceil(this.height / this.nodeHeight)+1
         var nodeCount = 0
         while(true){
             if(nodeCount >= maxNode){
                 break
             }
-            if(index >= this.data.length){
+            if(nodeCount >= this.data.length){
                 break
             }
             var node = this.createNode()
