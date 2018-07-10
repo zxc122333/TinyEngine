@@ -69,6 +69,9 @@ export class ScrollView extends Node{
     }
     onTouchBegin(touch){
         console.log("onTouchBegin1",touch.current.x,touch.current.y)
+        if(this.maxY <= this.height){
+            return
+        }
         var local = this.globalToLocal(touch.current.x,touch.current.y)
         if(!this.isInside(local.x,local.y)){
             return
