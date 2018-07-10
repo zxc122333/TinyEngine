@@ -106,7 +106,6 @@ export class Node{
         }
     }
     _callOnExit(engine){
-        this.engine = engine
         if(!this._active){
             return
         }
@@ -119,6 +118,7 @@ export class Node{
         for(var i =0;i<this._children.length;i++){
             this._children[i]._callOnExit(engine)
         }
+        this.engine = engine
     }
     _callUpdate(dt){
         for(var i =0;i<this._children.length;i++){
