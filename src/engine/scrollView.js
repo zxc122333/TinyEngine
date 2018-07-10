@@ -36,7 +36,7 @@ export class ScrollView extends Node{
             dy = -this.scrollY
             this.speed = 0
         }
-        if(this.maxY > this.height && this.scrollY + dy < -this.maxY + this.height){
+        if(this.scrollY + dy < -this.maxY + this.height){
             dy = -(this.scrollY + this.maxY - this.height)
             this.speed = 0
         }
@@ -87,7 +87,7 @@ export class ScrollView extends Node{
         if(this.scrollY + dy >= 0){
             dy = -this.scrollY
         }
-        if(this.maxY > this.height && this.scrollY + dy < -this.maxY + this.height){
+        if(this.scrollY + dy < -this.maxY + this.height){
             dy = -(this.scrollY + this.maxY - this.height)
         }
 
