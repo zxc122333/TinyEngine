@@ -1,0 +1,3 @@
+echo:
+  script:
+    - echo "Hello World!"
