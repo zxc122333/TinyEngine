@@ -104,7 +104,7 @@ export class TouchManager{
 
         var raw = args.changedTouches[0]
 
-        this.touch = new Touch(raw.identifier,raw.pageX,raw.pageY)
+        this.touch = new Touch(raw.identifier,raw.pageX*this.engine.scale.x,raw.pageY*this.engine.scale.y)
 
         for(var i = 0;i<this.layers.length;i++){
             var layer = this.layerNodes[this.layers[i]]
@@ -151,7 +151,7 @@ export class TouchManager{
         }
         this.touch.swallow = false
         // var now = Date.now()
-        this.touch._moveTo(raw.pageX,raw.pageY)
+        this.touch._moveTo(raw.pageX*this.engine.scale.x,raw.pageY*this.engine.scale.y)
         // }
         
         for(var k = 0;k< this.touch.inviter.length;k++){
@@ -199,7 +199,7 @@ export class TouchManager{
         if(raw == null){
             return
         }
-        this.touch._moveTo(raw.pageX,raw.pageY)
+        this.touch._moveTo(raw.pageX*this.engine.scale.x,raw.pageY*this.engine.scale.y)
         for(var k = 0;k< this.touch.inviter.length;k++){
             if(this.touch.inviter[k].onTouchEnd){
                 try{

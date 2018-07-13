@@ -130,9 +130,9 @@ export class Node{
     }
 
     _render(ctx,a,b,c,d,e,f){
-        this.render && this.render(ctx,a,b,c,d,this.x + e,this.y + f)
+        this.render && this.render(ctx,a,b,c,d,this.x*this.engine.scale.x + e,this.y*this.engine.scale.y + f)
         for(var i=0;i<this._children.length;i++){
-            this._children[i]._render(ctx,a,b,c,d,this.x + e,this.y + f)
+            this._children[i]._render(ctx,a,b,c,d,this.x*this.engine.scale.x + e,this.y*this.engine.scale.y + f)
         }
     }
 

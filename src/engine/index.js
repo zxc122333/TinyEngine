@@ -8,7 +8,7 @@ export class Engine extends EventMixin{
         this.canvas.engine = this
         this.updateTimer = null
         this._lastUpdate = 0
-
+        this._scale = {x:1,y:1}
         this._tempCanvas = {}
     }
     update(){
@@ -34,6 +34,10 @@ export class Engine extends EventMixin{
         cancelAnimationFrame(this.updateTimer)
         this.updateTimer = null
         this.emit("stop")
+    }
+    scale(x,y){
+        this.scale.x = x
+        this.scale.y = y
     }
 
     static mixin(targetClass,mixin){

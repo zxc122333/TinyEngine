@@ -9,7 +9,7 @@ export class Canvas extends Node{
     }
 
     _renderCanvas(){
-        this.ctx.setTransform(1,0,0,1,0,0)
+        this.ctx.setTransform(this._engine.scale.x,0,0,this.engine.scale.y,0,0)
         this.ctx.clearRect(0,0,this.width,this.height);
         for(var i=0;i<this._children.length;i++){
             this._children[i]._render(this.ctx,1,0,0,1,0,0)
