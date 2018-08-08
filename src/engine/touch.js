@@ -50,8 +50,7 @@ export class TouchManager{
         this.layers = []
         this.layerNodes = {}
         this.layerNodeMap = new Map()
-        engine.on("start",this._addListener.bind(this))
-        engine.on("stop",this._removeListener.bind(this))
+        this._addListener()
     }
 
     addLayer(layerIndex,node){
@@ -95,6 +94,9 @@ export class TouchManager{
     }
 
     _onTouchBegin(args){
+        if(!this.engine.updateTimer){
+            return
+        }
         if(this.touch != null){
             return
         }
@@ -133,7 +135,10 @@ export class TouchManager{
             }
         }
     }
-    _onTouchMove(args){
+    _onTouchMove(args){ 
+        if(!this.engine.updateTimer){
+            return
+        }
         if(this.touch == null){
             return
         }
